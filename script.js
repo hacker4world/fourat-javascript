@@ -26,10 +26,29 @@ console.log(isNaN(nom));
 
 51;
 
-A = Number(prompt("Enter A"));
+/*A = Number(prompt("Enter A"));
 while (A % 2 != 0 || A < 50 || A > 70) {
   A = Number(prompt("Enter A"));
 }
-console.log(A);
+console.log(A);*/
 
-let Liste = [];
+let list = [5, 10, 15];
+
+list.push(20);
+list.unshift(0);
+
+console.log(list);
+
+console.log(list.length);
+
+console.log(list.pop());
+
+console.log(list.shift());
+
+console.log(list[0]);
+
+console.log(list.indexOf(100));
+
+console.log(list.includes(5));
+console.log(list.includes(7));
+

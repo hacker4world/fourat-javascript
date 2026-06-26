@@ -26,8 +26,6 @@ if (C != "+" && C != "-" && C != "*" && C != "**" && C != "%" && C != "/") {
   }
 }*/
 
-
-
 /*if (isNaN(A) && isNaN(B)) {
   alert("ta7che  !!");
 } else {
@@ -38,3 +36,16 @@ if (C != "+" && C != "-" && C != "*" && C != "**" && C != "%" && C != "/") {
   console.log(A ** B);
   console.log(A % B);
 }*/
+let A = Number(prompt("saisir les nombres"));
+let List = [];
+for (let i = 0; i <= A; i++) {
+  let B = Number(prompt("Enter les nombres"));
+  while (B < 50 || B > 100) {
+    alert("les nombres doit etre et enter 50 et 100");
+    B = Number(prompt("Enter les nombres"));
+  }
+  List.push(B);
+  if (B % 2 == 0) {
+    console.log(B);
+  }
+}
