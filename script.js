@@ -16,6 +16,8 @@ console.log(nom.includes("y"));
 console.log(nom.indexOf("z"));
 console.log(nom.toUpperCase());
 console.log(nom.toLowerCase());
+console.log(nom.slice(0, 5));
+
 console.log(isNaN(nom));
 
 // number operations
