@@ -17,6 +17,8 @@ console.log(nom.indexOf("z"));
 console.log(nom.toUpperCase());
 console.log(nom.toLowerCase());
 console.log(nom.slice(0, 5));
+console.log(nom.trim());
+
 
 console.log(isNaN(nom));
 
@@ -54,3 +56,10 @@ console.log(list.indexOf(100));
 console.log(list.includes(5));
 console.log(list.includes(7));
 
+console.log(list.split(" "));
+
+
+
+while(condition) {
+  code
+}
