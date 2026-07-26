@@ -4,15 +4,30 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-
-    <div>
-
+    <h1 id="message">You win</h1>
+    <div class="container">
+      <div class="cards">
+        <img id="rock" src="./images/rock.webp" alt="" srcset="" />
+        <img id="paper" src="./images/paper.png" alt="" srcset="" />
+        <img id="scissors" src="./images/scissors.jpeg" alt="" srcset="" />
+      </div>
     </div>
 
-    <button>click here</button>
+    <div class="results-container">
+      <div class="score-user">
+        <img id="s1" src="" alt="" />
+      </div>
+      <div class="score-user">
+        <img id="s2" src="" alt="" />
+      </div>
+    </div>
 
-    <script src="functions.js"></script>
+    <h3 id="me">You : 0</h3>
+    <h3 id="com">Computer : 0</h3>
+
+    <script src="dom.js"></script>
   </body>
 </html>

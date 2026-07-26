@@ -455,27 +455,25 @@ function game() {
   return false;
 }
 
-let correctEmail = "fourat@gmail.com";
-
-let correctPassword = "Aa&24829601";
-
 let accounts = [];
+let connectedAccount = null; // login session
 
 function login() {
   let email = prompt("enter email: ");
   let password = prompt("Enter password: ");
 
-  console.log(email);
-  console.log(password);
-
   if (verifMail(email) && checkPassword(password)) {
-    if (email != correctEmail || password != correctPassword) {
+    if (verifMail(email) && checkPassword(password)) {
+      for (i = 0; i < accounts.length; i++) {
+        if (accounts[i].email == email && accounts[i].password == password) {
+          alert("Login successful");
+          connectedAccount = accounts[i];
+          return true;
+        }
+      }
       alert("Email ou mot de passe invalide");
-    } else {
-      alert("login successful");
+      return false;
     }
-  } else {
-    alert("Email ou mot de passe format invalide");
   }
 }
 
@@ -497,8 +495,88 @@ function signup() {
       password: p1,
       money: 0,
     });
-    console.log(accounts);
+    alert("Signup successful");
   }
+}
+
+function depositMoney() {
+  if (connectedAccount == null) {
+    alert("no account connected");
+    return false;
+  } else {
+    m = Number(prompt("enter the number: "));
+    if (isNaN(m) == true || m < 1 || m > 200) {
+      alert("maximum number is 200");
+      return false;
+    } else {
+      for (i = 0; i < accounts.length; i++) {
+        if (accounts[i].email == connectedAccount.email) {
+          accounts[i].money = accounts[i].money + m;
+        }
+      }
+    }
+  }
+  alert("Money has been added");
+  return true;
+}
+
+function checkBalance() {
+  if (connectedAccount == null) {
+    alert("no account is found");
+    return false;
+  } else {
+    for (i = 0; i < accounts.length; i++) {
+      alert("your balance is: " + accounts[i].money);
+    }
+  }
+  return true;
+}
+
+function withdrawMoney() {
+  if (connectedAccount == null) {
+    alert("no accounts is found");
+    return false;
+  } else {
+    f = Number(prompt("withdraw your money: "));
+    for (i = 0; i < accounts.length; i++) {
+      if (accounts[i].email == connectedAccount.email) {
+        if (accounts[i].money < f) {
+          alert("not enough money");
+          return false;
+        } else {
+          accounts[i].money = accounts[i].money - f;
+          alert("money is withdrawed");
+          return true;
+        }
+      }
+    }
+  }
+  return true;
+}
+
+function main() {
+  choice = prompt(
+    "1. Signup, 2. Login, 3. Deposit money, 4. Withdraw money, 5. Check balance",
+  );
+
+  while (choice != "0") {
+    if (choice == "1") {
+      signup();
+    } else if (choice == "2") {
+      login();
+    } else if (choice == "3") {
+      depositMoney();
+    } else if (choice == "5") {
+      checkBalance();
+    } else if (choice == "4") {
+      withdrawMoney();
+    }
+
+    choice = prompt(
+      "1. Signup, 2. Login, 3. Deposit money, 4. Withdraw money, 5. Check balance",
+    );
+  }
+  alert("program has exited");
 }
 
 function checkPassword(pass) {
@@ -564,4 +642,152 @@ function verifMail(ch) {
   return true;
 }
 
-signup();
+let phones = [];
+let account = null;
+let historique = [];
+let savedAccounts = [
+  {
+    name: "mahmoud",
+    lastname: "Lakhdher",
+    username: "mahmoud212",
+    password: "Aa&24829601",
+    role: "admin",
+    solde: 0,
+  },
+];
+function first() {
+  f = prompt("1. Signup, 2. Login,");
+  while (f != 0) {
+    if (f == 1) {
+      signup();
+    } else if (f == 2) {
+      login();
+    }
+  }
+}
+function signup() {
+  a1 = prompt("Enter name :");
+  a2 = prompt("Enter lastname :");
+  a3 = prompt("Enter username :");
+  a4 = prompt("Enter password :");
+  if (isNaN(a1[0]) == false) {
+    return false;
+  } else if (isNaN(a2[0]) == false) {
+    return false;
+  } else if (isNaN(a3[0]) == false && a3.includes(" ") == true) {
+    return false;
+  } else if (a4.length < 8) {
+    return false;
+  }
+
+  for (i = 0; i < savedAccounts.length; i++) {
+    if (a3 == savedAccounts[i].username) {
+      alert("username exist");
+      return false;
+    }
+  }
+  savedAccounts.push({
+    name: a1,
+    lastname: a2,
+    username: a3,
+    password: a4,
+    role: client,
+    solde: 1500,
+  });
+}
+
+function login() {
+  let username = prompt("Enter username: ");
+  let password = prompt("Enter password: ");
+  for (i = 0; i < savedAccounts.length; i++) {
+    if (
+      savedAccounts[i].username == username &&
+      savedAccounts[i].password == password
+    ) {
+      account = savedAccounts[i];
+      alert("Login successful");
+      if (savedAccounts[i].role == "admin") {
+        return admin();
+      }
+    }
+  }
+  alert("username or password invalide");
+  return false;
+}
+function admin() {
+  k = prompt("1: add product , 2: show product , 3: show sells ");
+  if (k == "1") {
+    phonename = prompt("Enter phone name: ");
+    phonecolor = prompt("Enter phone color: ");
+    stock = prompt("Enter the stock of this phone: ");
+    phoneprice = Number(prompt("Enter phone price: "));
+    if (
+      isNaN(stock) == true ||
+      stock < 0 ||
+      isNaN(phoneprice) == true ||
+      phoneprice < 100
+    ) {
+      alert("phone price or stock invalid");
+      return false;
+    }
+    phones.push({
+      name: phonename,
+      color: phonecolor,
+      stock: stock,
+      price: phoneprice,
+    });
+  } else if (k == "2") {
+    n = "";
+    for (i = 0; i < phones.length; i++) {
+      n = n + phones[i].name + " : " + phones[i].stock + "\n";
+    }
+    alert("phones: " + n);
+  } else if (k == "3") {
+    t = "";
+    for (i = 0; i < historique.length; i++) {
+      t = t + +historique[i].username + " : " + historique[i].name;
+    }
+    alert("the sells are :" + t);
+  }
+}
+function client() {
+  c = prompt("1: buy a phones , 2: show historique");
+  myphone = null;
+  if (c == "1") {
+    p = prompt("Enter the phone name to buy: ");
+    for (i = 0; i < phones.length; i++) {
+      if (phones[i].name == p) {
+        alert("Phone dispo");
+        myphone = phones[i];
+      }
+    }
+    if (myphone.stock == 0 || myphone.price > account.solde) {
+      alert("ta7cheee noo phone for you");
+    }
+    for (i = 0; i < savedAccounts.length; i++) {
+      if (savedAccounts[i].username == account.username) {
+        savedAccounts[i].solde = savedAccounts[i].solde - myphone.price;
+      }
+    }
+    for (i = 0; i < phones.length; i++) {
+      if (phones[i].name == phones.name) {
+        phones[i].stock = phones[i].stock - 1;
+      }
+    }
+    historique.push({
+      username: account.username,
+      name: myphone.name,
+    });
+  } else if (c == "2") {
+    z = "";
+    for (i = 0; i < historique.length; i++) {
+      if (historique[i].username == account.username) {
+        z = z + historique[i].username + " : " + historique[i].name;
+      }
+    }
+    alert("the historque is :" + z);
+  }
+}
+
+// Phone : name, price, stock
+// Account : name, lastname, username, password, role, solde
