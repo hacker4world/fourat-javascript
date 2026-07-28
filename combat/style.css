@@ -1,0 +1,40 @@
+#health-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+#enemy-health {
+  width: 50%;
+}
+
+#enemy-name {
+  text-align: center;
+}
+
+.characters {
+  display: flex;
+  gap: 20px;
+}
+
+.character {
+  width: 100px;
+  height: 70px;
+  border-radius: 10px;
+}
+
+.characters-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 22%;
+}
+
+.skills {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.skill {
+  width: 200px;
+}
