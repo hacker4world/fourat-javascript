@@ -1,0 +1,1102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create your account — Ember</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,700;9..144,900&family=Outfit:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0a0807;
+        --bg-2: #14100d;
+        --fg: #faf6f0;
+        --muted: #8a7d72;
+        --accent: #ff6b35;
+        --accent-2: #ffa94d;
+        --gold: #f4b942;
+        --danger: #ef4444;
+        --success: #4ade80;
+        --border: rgba(255, 255, 255, 0.08);
+      }
+
+      * {
+        -webkit-font-smoothing: antialiased;
+      }
+
+      html,
+      body {
+        background: var(--bg);
+        color: var(--fg);
+        font-family: "Outfit", sans-serif;
+      }
+
+      body {
+        overflow-x: hidden;
+      }
+
+      .display {
+        font-family: "Fraunces", serif;
+      }
+
+      /* ===== Ambient background ===== */
+      .ambient {
+        position: fixed;
+        inset: 0;
+        z-index: -2;
+        background:
+          radial-gradient(
+            circle at 18% 28%,
+            rgba(255, 107, 53, 0.18),
+            transparent 55%
+          ),
+          radial-gradient(
+            circle at 82% 72%,
+            rgba(244, 185, 66, 0.1),
+            transparent 55%
+          ),
+          radial-gradient(
+            circle at 50% 110%,
+            rgba(255, 61, 0, 0.1),
+            transparent 60%
+          );
+        animation: ambientShift 22s ease-in-out infinite;
+      }
+      @keyframes ambientShift {
+        0%,
+        100% {
+          transform: translate(0, 0) scale(1);
+        }
+        33% {
+          transform: translate(-2%, 1.5%) scale(1.04);
+        }
+        66% {
+          transform: translate(1.5%, -2%) scale(0.98);
+        }
+      }
+
+      .noise {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        opacity: 0.05;
+        mix-blend-mode: overlay;
+        background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+      }
+
+      /* ===== Side panel ===== */
+      .side-panel {
+        background:
+          radial-gradient(
+            circle at 30% 18%,
+            rgba(255, 107, 53, 0.22),
+            transparent 60%
+          ),
+          radial-gradient(
+            circle at 70% 85%,
+            rgba(244, 185, 66, 0.16),
+            transparent 60%
+          ),
+          linear-gradient(155deg, #1a0f08 0%, #0a0807 100%);
+        position: relative;
+        overflow: hidden;
+      }
+      .side-panel::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+          linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.025) 1px,
+            transparent 1px
+          );
+        background-size: 48px 48px;
+        mask-image: radial-gradient(
+          ellipse at center,
+          black 30%,
+          transparent 80%
+        );
+        -webkit-mask-image: radial-gradient(
+          ellipse at center,
+          black 30%,
+          transparent 80%
+        );
+      }
+
+      .orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(70px);
+        opacity: 0.55;
+        animation: float 14s ease-in-out infinite;
+      }
+      .orb-1 {
+        width: 380px;
+        height: 380px;
+        top: -120px;
+        left: -120px;
+        background: radial-gradient(circle, #ff6b35, transparent 70%);
+      }
+      .orb-2 {
+        width: 320px;
+        height: 320px;
+        bottom: -80px;
+        right: 10%;
+        background: radial-gradient(circle, #f4b942, transparent 70%);
+        animation-delay: -5s;
+      }
+      .orb-3 {
+        width: 240px;
+        height: 240px;
+        top: 45%;
+        right: -60px;
+        background: radial-gradient(circle, #ff3d00, transparent 70%);
+        animation-delay: -9s;
+        opacity: 0.4;
+      }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translate(0, 0) scale(1);
+        }
+        50% {
+          transform: translate(25px, -35px) scale(1.08);
+        }
+      }
+
+      /* ===== Floating label inputs ===== */
+      .field {
+        position: relative;
+      }
+      .field input {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.025);
+        border: 1px solid var(--border);
+        color: var(--fg);
+        padding: 18px 16px 18px 48px;
+        border-radius: 14px;
+        font-size: 15px;
+        font-family: inherit;
+        transition:
+          border-color 0.25s ease,
+          background 0.25s ease,
+          box-shadow 0.25s ease;
+        outline: none;
+      }
+      .field input::placeholder {
+        color: transparent;
+      }
+      .field input:hover {
+        border-color: rgba(255, 255, 255, 0.16);
+        background: rgba(255, 255, 255, 0.035);
+      }
+      .field input:focus {
+        border-color: var(--accent);
+        background: rgba(255, 107, 53, 0.06);
+        box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.12);
+      }
+      .field input:focus + .field-icon {
+        color: var(--accent);
+      }
+
+      /* Valid state — green tint only after content is typed */
+      .field input:valid:not(:placeholder-shown) {
+        border-color: rgba(74, 222, 128, 0.35);
+      }
+      .field input:valid:not(:placeholder-shown) + .field-icon {
+        color: var(--success);
+      }
+
+      /* Invalid state — red tint after blur (using :not(:placeholder-shown)) */
+      .field input:invalid:not(:focus):not(:placeholder-shown) {
+        border-color: rgba(239, 68, 68, 0.45);
+        background: rgba(239, 68, 68, 0.04);
+      }
+      .field input:invalid:not(:focus):not(:placeholder-shown) + .field-icon {
+        color: var(--danger);
+      }
+
+      .field-icon {
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--muted);
+        pointer-events: none;
+        transition: color 0.25s ease;
+      }
+      .field label {
+        position: absolute;
+        left: 48px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--muted);
+        font-size: 15px;
+        pointer-events: none;
+        padding: 0 6px;
+        background: var(--bg);
+        transition:
+          top 0.2s ease,
+          font-size 0.2s ease,
+          color 0.2s ease,
+          left 0.2s ease;
+      }
+      .field input:focus + .field-icon + label,
+      .field input:not(:placeholder-shown) + .field-icon + label {
+        top: 0;
+        left: 12px;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-weight: 500;
+        color: var(--accent);
+      }
+      .field
+        input:invalid:not(:focus):not(:placeholder-shown)
+        + .field-icon
+        + label {
+        color: var(--danger);
+      }
+      .field input:valid:not(:placeholder-shown) + .field-icon + label {
+        color: var(--success);
+      }
+
+      /* ===== Submit button ===== */
+      .btn-primary {
+        background: linear-gradient(135deg, #ff6b35 0%, #ff3d00 100%);
+        color: white;
+        padding: 16px 24px;
+        border-radius: 14px;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+        transition:
+          transform 0.25s ease,
+          box-shadow 0.25s ease;
+        position: relative;
+        overflow: hidden;
+        box-shadow:
+          0 12px 32px -12px rgba(255, 107, 53, 0.6),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      }
+      .btn-primary::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, #ffa94d 0%, #ff6b35 100%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+      .btn-primary::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -120%;
+        width: 60%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.25),
+          transparent
+        );
+        transform: skewX(-20deg);
+        transition: left 0.8s ease;
+      }
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 18px 40px -10px rgba(255, 107, 53, 0.75);
+      }
+      .btn-primary:hover::before {
+        opacity: 1;
+      }
+      .btn-primary:hover::after {
+        left: 120%;
+      }
+      .btn-primary:active {
+        transform: translateY(0);
+      }
+      .btn-primary > * {
+        position: relative;
+        z-index: 2;
+      }
+
+      /* ===== Custom checkbox ===== */
+      .checkbox {
+        appearance: none;
+        -webkit-appearance: none;
+        width: 20px;
+        height: 20px;
+        border: 1.5px solid rgba(255, 255, 255, 0.2);
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.03);
+        cursor: pointer;
+        position: relative;
+        transition: all 0.2s ease;
+        flex-shrink: 0;
+      }
+      .checkbox:hover {
+        border-color: rgba(255, 107, 53, 0.6);
+      }
+      .checkbox:checked {
+        background: linear-gradient(135deg, #ff6b35, #ff3d00);
+        border-color: #ff6b35;
+      }
+      .checkbox:checked::after {
+        content: "";
+        position: absolute;
+        top: 2px;
+        left: 6px;
+        width: 5px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+      }
+      .checkbox:focus-visible {
+        box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.2);
+      }
+
+      /* ===== Social buttons ===== */
+      .social-btn {
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.025);
+        padding: 13px;
+        border-radius: 14px;
+        transition: all 0.25s ease;
+        color: var(--fg);
+      }
+      .social-btn:hover {
+        border-color: rgba(255, 107, 53, 0.5);
+        background: rgba(255, 107, 53, 0.06);
+        transform: translateY(-2px);
+      }
+
+      /* ===== Reveal animation ===== */
+      .reveal {
+        animation: reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+      }
+      @keyframes reveal {
+        from {
+          opacity: 0;
+          transform: translateY(18px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .d1 {
+        animation-delay: 0.05s;
+      }
+      .d2 {
+        animation-delay: 0.15s;
+      }
+      .d3 {
+        animation-delay: 0.25s;
+      }
+      .d4 {
+        animation-delay: 0.35s;
+      }
+      .d5 {
+        animation-delay: 0.45s;
+      }
+      .d6 {
+        animation-delay: 0.55s;
+      }
+      .d7 {
+        animation-delay: 0.65s;
+      }
+
+      /* ===== Logo mark ===== */
+      .logo-text {
+        background: linear-gradient(135deg, #ffa94d, #ff6b35 50%, #f4b942);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      /* ===== Misc ===== */
+      .quote-mark {
+        font-family: "Fraunces", serif;
+        font-size: 140px;
+        line-height: 0.4;
+        color: rgba(255, 107, 53, 0.18);
+        font-weight: 900;
+      }
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.15);
+      }
+
+      /* Pulsing dot */
+      .pulse-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--success);
+        box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7);
+        animation: pulse 2s infinite;
+      }
+
+      .alert-error {
+        animation: alertSlideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+      }
+      @keyframes alertSlideIn {
+        from {
+          opacity: 0;
+          transform: translateY(-8px) scale(0.98);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+      .alert-pulse {
+        animation: alertPulse 2.4s ease-in-out infinite;
+      }
+      @keyframes alertPulse {
+        0%,
+        100% {
+          opacity: 0.35;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.7;
+          transform: scale(1.15);
+        }
+      }
+      .alert-ping {
+        animation: alertPing 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+      }
+      @keyframes alertPing {
+        0% {
+          transform: scale(1);
+          opacity: 0.6;
+        }
+        75%,
+        100% {
+          transform: scale(1.8);
+          opacity: 0;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .alert-error,
+        .alert-pulse,
+        .alert-ping {
+          animation: none !important;
+        }
+      }
+
+      @keyframes pulse {
+        0% {
+          box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.6);
+        }
+        70% {
+          box-shadow: 0 0 0 8px rgba(74, 222, 128, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(74, 222, 128, 0);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation: none !important;
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body class="min-h-screen">
+    <div class="ambient"></div>
+    <div class="noise"></div>
+
+    <div class="min-h-screen grid lg:grid-cols-5">
+      <!-- ============== LEFT: BRAND / EDITORIAL ============== -->
+      <aside
+        class="side-panel lg:col-span-2 hidden lg:flex flex-col justify-between p-12 relative"
+      >
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+
+        <!-- Logo -->
+        <header class="relative z-10 reveal d1">
+          <div class="flex items-center gap-3">
+            <div
+              class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-amber-400 flex items-center justify-center shadow-lg shadow-orange-500/40"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="white"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M12 2 L2 7 L12 12 L22 7 L12 2 Z" />
+                <path d="M2 17 L12 22 L22 17" />
+                <path d="M2 12 L12 17 L22 12" />
+              </svg>
+            </div>
+            <span class="display text-2xl font-extrabold tracking-tight"
+              >Ember</span
+            >
+          </div>
+        </header>
+
+        <!-- Quote -->
+        <div class="relative z-10 reveal d2 max-w-md">
+          <div class="quote-mark">"</div>
+          <p
+            class="display text-3xl font-light leading-snug text-amber-50/90 -mt-10"
+          >
+            Design is not just what it looks like and feels like.
+            <span class="italic font-medium text-orange-300"
+              >Design is how it works.</span
+            >
+          </p>
+          <div class="mt-8 flex items-center gap-3">
+            <div class="w-10 h-px bg-orange-400/60"></div>
+            <div>
+              <p class="text-sm font-medium text-amber-50">Steve Jobs</p>
+              <p class="text-xs text-amber-50/40 mt-0.5">
+                Co-founder, Apple Inc.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stats + status -->
+        <div class="relative z-10 reveal d3">
+          <div class="flex items-center gap-2 mb-6">
+            <span class="pulse-dot"></span>
+            <span class="text-xs text-amber-50/50 uppercase tracking-[0.2em]"
+              >All systems operational</span
+            >
+          </div>
+          <div class="grid grid-cols-3 gap-6 pt-8 border-t border-white/5">
+            <div>
+              <p class="display text-3xl font-extrabold text-orange-300">
+                120K
+              </p>
+              <p class="text-xs text-amber-50/40 mt-1 uppercase tracking-wider">
+                Creators
+              </p>
+            </div>
+            <div>
+              <p class="display text-3xl font-extrabold text-orange-300">98%</p>
+              <p class="text-xs text-amber-50/40 mt-1 uppercase tracking-wider">
+                Retention
+              </p>
+            </div>
+            <div>
+              <p class="display text-3xl font-extrabold text-orange-300">
+                4.9<span class="text-lg">★</span>
+              </p>
+              <p class="text-xs text-amber-50/40 mt-1 uppercase tracking-wider">
+                Rating
+              </p>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- ============== RIGHT: SIGNUP FORM ============== -->
+      <main
+        class="lg:col-span-3 flex items-center justify-center p-6 sm:p-12 relative"
+      >
+        <!-- Subtle background orbs on form side -->
+        <div
+          class="absolute top-16 right-20 w-72 h-72 rounded-full bg-orange-500/10 blur-3xl pointer-events-none"
+        ></div>
+        <div
+          class="absolute bottom-16 left-16 w-96 h-96 rounded-full bg-amber-500/5 blur-3xl pointer-events-none"
+        ></div>
+
+        <div class="w-full max-w-md relative z-10">
+          <!-- Mobile logo -->
+          <div class="lg:hidden mb-10 flex items-center gap-3 reveal d1">
+            <div
+              class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-amber-400 flex items-center justify-center"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="white"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M12 2 L2 7 L12 12 L22 7 L12 2 Z" />
+                <path d="M2 17 L12 22 L22 17" />
+                <path d="M2 12 L12 17 L22 12" />
+              </svg>
+            </div>
+            <span class="display text-2xl font-extrabold">Ember</span>
+          </div>
+
+          <!-- Header -->
+          <div class="mb-10 reveal d1">
+            <div class="flex items-center gap-2 mb-4">
+              <span class="w-8 h-px bg-orange-400"></span>
+              <p
+                class="text-xs font-semibold tracking-[0.25em] text-orange-400 uppercase"
+              >
+                Become a member
+              </p>
+            </div>
+            <h1
+              class="display text-5xl sm:text-6xl font-extrabold leading-[1.02] mb-4 tracking-tight"
+            >
+              Create your<br />
+              <span class="logo-text italic font-black">account</span>
+            </h1>
+            <p class="text-amber-50/50 text-sm">
+              Already have an account?
+              <a
+                href="#"
+                class="text-orange-400 hover:text-orange-300 font-medium transition-colors underline-offset-4 hover:underline"
+                >Sign in</a
+              >
+            </p>
+          </div>
+
+          <div
+            role="alert"
+            aria-live="assertive"
+            class="alert-error relative overflow-hidden rounded-2xl border border-red-500/30 bg-red-500/[0.06] backdrop-blur-sm p-4 sm:p-5 mb-5"
+          >
+            <!-- Animated glow stripe on the left edge -->
+            <span
+              class="absolute inset-y-0 left-0 w-1 bg-gradient-to-b from-red-400 via-rose-500 to-orange-500"
+            ></span>
+
+            <!-- Soft pulsing backdrop glow -->
+            <span
+              class="pointer-events-none absolute -top-12 -right-12 w-40 h-40 rounded-full bg-red-500/20 blur-3xl alert-pulse"
+            ></span>
+
+            <div class="relative flex gap-3.5">
+              <!-- Icon with pulsing ring -->
+              <div class="relative flex-shrink-0 mt-0.5">
+                <span
+                  class="absolute inset-0 rounded-full bg-red-500/40 alert-ping"
+                ></span>
+                <span
+                  class="relative flex items-center justify-center w-9 h-9 rounded-full bg-gradient-to-br from-red-500 to-rose-600 shadow-lg shadow-red-500/40"
+                >
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="white"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M12 9v4" />
+                    <path d="M12 17h.01" />
+                    <path
+                      d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"
+                    />
+                  </svg>
+                </span>
+              </div>
+
+              <!-- Content -->
+              <div class="flex-1 min-w-0">
+                <div class="flex items-start justify-between gap-3">
+                  <div>
+                    <h3
+                      class="display text-base font-bold text-red-50 leading-tight"
+                    >
+                      Couldn't create your account
+                    </h3>
+                    <p class="text-sm text-red-100/70 mt-1 leading-relaxed">
+                      Please fix the issues below and try submitting again.
+                    </p>
+                  </div>
+                  <span
+                    class="text-[10px] font-semibold uppercase tracking-[0.15em] text-red-300/80 bg-red-500/15 border border-red-500/25 px-2 py-1 rounded-full whitespace-nowrap"
+                  >
+                    3 errors
+                  </span>
+                </div>
+
+                <!-- Error list -->
+                <ul class="mt-3.5 space-y-2 text-sm">
+                  <li class="flex items-start gap-2.5 text-red-100/85">
+                    <svg
+                      class="mt-0.5 flex-shrink-0 text-red-400"
+                      width="15"
+                      height="15"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <circle cx="12" cy="12" r="10" />
+                      <path d="m15 9-6 6" />
+                      <path d="m9 9 6 6" />
+                    </svg>
+                    <span
+                      ><strong class="font-semibold text-red-50"
+                        >Email address</strong
+                      >
+                      is already registered to another account.</span
+                    >
+                  </li>
+                  <li class="flex items-start gap-2.5 text-red-100/85">
+                    <svg
+                      class="mt-0.5 flex-shrink-0 text-red-400"
+                      width="15"
+                      height="15"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <circle cx="12" cy="12" r="10" />
+                      <path d="m15 9-6 6" />
+                      <path d="m9 9 6 6" />
+                    </svg>
+                    <span
+                      ><strong class="font-semibold text-red-50"
+                        >Password</strong
+                      >
+                      must contain at least one uppercase letter and a
+                      number.</span
+                    >
+                  </li>
+                  <li class="flex items-start gap-2.5 text-red-100/85">
+                    <svg
+                      class="mt-0.5 flex-shrink-0 text-red-400"
+                      width="15"
+                      height="15"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <circle cx="12" cy="12" r="10" />
+                      <path d="m15 9-6 6" />
+                      <path d="m9 9 6 6" />
+                    </svg>
+                    <span
+                      ><strong class="font-semibold text-red-50"
+                        >Confirm password</strong
+                      >
+                      doesn't match the password above.</span
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Form -->
+          <form class="space-y-4" novalidate>
+            <!-- First + Last name -->
+            <div class="grid grid-cols-2 gap-3 reveal d2">
+              <div class="field">
+                <input
+                  type="text"
+                  id="firstname"
+                  name="firstname"
+                  placeholder=" "
+                  required
+                  minlength="2"
+                  autocomplete="given-name"
+                />
+                <svg
+                  class="field-icon"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+                <label for="firstname">First name</label>
+              </div>
+              <div class="field">
+                <input
+                  type="text"
+                  id="lastname"
+                  name="lastname"
+                  placeholder=" "
+                  required
+                  minlength="2"
+                  autocomplete="family-name"
+                />
+                <svg
+                  class="field-icon"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+                <label for="lastname">Last name</label>
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div class="field reveal d3">
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder=" "
+                required
+                autocomplete="email"
+              />
+              <svg
+                class="field-icon"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="2" y="4" width="20" height="16" rx="2" />
+                <path d="m22 7-10 5L2 7" />
+              </svg>
+              <label for="email">Email address</label>
+            </div>
+
+            <!-- Password -->
+            <div class="field reveal d4">
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder=" "
+                required
+                minlength="8"
+                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                autocomplete="new-password"
+              />
+              <svg
+                class="field-icon"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="3" y="11" width="18" height="11" rx="2" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+              </svg>
+              <label for="password">Password</label>
+            </div>
+
+            <!-- Password hint -->
+            <div
+              class="reveal d4 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs -mt-1 ml-1"
+            >
+              <span class="text-amber-50/40">Min 8 characters</span>
+              <span class="text-amber-50/15">·</span>
+              <span class="text-amber-50/40">Uppercase letter</span>
+              <span class="text-amber-50/15">·</span>
+              <span class="text-amber-50/40">One number</span>
+            </div>
+
+            <!-- Confirm password -->
+            <div class="field reveal d5">
+              <input
+                type="password"
+                id="confirm-password"
+                name="confirm-password"
+                placeholder=" "
+                required
+                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                autocomplete="new-password"
+              />
+              <svg
+                class="field-icon"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="3" y="11" width="18" height="11" rx="2" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                <path d="m9 16 2 2 4-4" />
+              </svg>
+              <label for="confirm-password">Confirm password</label>
+            </div>
+
+            <!-- Terms -->
+            <div class="reveal d6 flex items-start gap-3 pt-2">
+              <input
+                type="checkbox"
+                id="terms"
+                name="terms"
+                required
+                class="checkbox mt-0.5"
+              />
+              <label
+                for="terms"
+                class="text-sm text-amber-50/60 leading-relaxed cursor-pointer"
+              >
+                I agree to Ember's
+                <a
+                  href="#"
+                  class="text-orange-400 hover:text-orange-300 underline-offset-2 hover:underline"
+                  >Terms of Service</a
+                >
+                and
+                <a
+                  href="#"
+                  class="text-orange-400 hover:text-orange-300 underline-offset-2 hover:underline"
+                  >Privacy Policy</a
+                >.
+              </label>
+            </div>
+
+            <!-- Submit -->
+            <button
+              id="signup-button"
+              class="btn-primary w-full reveal d6 mt-2"
+            >
+              <span class="flex items-center justify-center gap-2">
+                Create account
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="transition-transform group-hover:translate-x-1"
+                >
+                  <path d="M5 12h14" />
+                  <path d="m12 5 7 7-7 7" />
+                </svg>
+              </span>
+            </button>
+
+            <!-- Divider -->
+            <div class="reveal d7 flex items-center gap-4 py-3">
+              <div class="flex-1 h-px bg-white/10"></div>
+              <span class="text-xs text-amber-50/30 uppercase tracking-[0.15em]"
+                >or continue with</span
+              >
+              <div class="flex-1 h-px bg-white/10"></div>
+            </div>
+
+            <!-- Social -->
+            <div class="grid grid-cols-3 gap-3 reveal d7">
+              <button
+                type="button"
+                class="social-btn flex items-center justify-center"
+                aria-label="Sign up with Google"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24">
+                  <path
+                    fill="#EA4335"
+                    d="M12 11v2.8h6.6c-.3 1.7-2 5-6.6 5-4 0-7.2-3.3-7.2-7.3S8 4.2 12 4.2c2.3 0 3.8.9 4.7 1.8l2-2C16.9 2.4 14.7 1.5 12 1.5 6.5 1.5 2 6 2 11.5S6.5 21.5 12 21.5c5.8 0 9.6-4 9.6-9.7 0-.7 0-1.2-.2-1.8H12z"
+                  />
+                </svg>
+              </button>
+              <button
+                type="button"
+                class="social-btn flex items-center justify-center"
+                aria-label="Sign up with GitHub"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"
+                  />
+                </svg>
+              </button>
+              <button
+                type="button"
+                class="social-btn flex items-center justify-center"
+                aria-label="Sign up with Apple"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"
+                  />
+                </svg>
+              </button>
+            </div>
+          </form>
+
+          <!-- Footer note -->
+          <p class="reveal d7 mt-10 text-center text-xs text-amber-50/30">
+            Protected by hCaptcha · 256-bit end-to-end encryption
+          </p>
+        </div>
+      </main>
+    </div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
